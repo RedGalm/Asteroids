@@ -32,12 +32,17 @@ public class AsteroidsApp extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 if (Keys.getOrDefault(KeyCode.LEFT, false)) {
                     ship.turnLeft();
                 }
                 if (Keys.getOrDefault(KeyCode.RIGHT, false)) {
                     ship.turnRight();
                 }
+                if (Keys.getOrDefault(KeyCode.UP, false)) {
+                    ship.accelerate();
+                }
+                ship.move();
             }
         }.start();
 

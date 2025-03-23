@@ -26,4 +26,24 @@ public abstract class Character {
     public Polygon getCharacter() {
         return this.character;
     }
+
+    public void setMovement(Point2D movement) {
+        this.movement = movement;
+    }
+
+    public void accelerate() {
+        double changeX = Math.cos(Math.toRadians(this.character.getRotate()));
+        double changeY = Math.sin(Math.toRadians(this.character.getRotate()));
+
+        changeX *= 0.10;
+        changeY *= 0.10;
+
+        this.movement = this.movement.add(changeX, changeY);
+
+    }
+
+    public void move() {
+        this.character.setTranslateX(this.character.getTranslateX() + this.movement.getX());
+        this.character.setTranslateY(this.character.getTranslateY() + this.movement.getY());
+    }
 }
