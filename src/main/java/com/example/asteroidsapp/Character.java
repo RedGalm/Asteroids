@@ -2,6 +2,7 @@ package com.example.asteroidsapp;
 
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 
 public abstract class Character {
     private Polygon character;
@@ -27,8 +28,13 @@ public abstract class Character {
         return this.character;
     }
 
-    public void setMovement(Point2D movement) {
-        this.movement = movement;
+    public Point2D getMovement() {
+        return this.movement;
+    }
+
+    public boolean collide(Character character) {
+        Shape collision = Shape.intersect(this.character, character.getCharacter());
+        return collision.getBoundsInLocal().getWidth() != -1;
     }
 
     public void accelerate() {

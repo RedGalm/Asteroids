@@ -8,8 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AsteroidsApp extends Application {
 
@@ -20,30 +19,51 @@ public class AsteroidsApp extends Application {
         Ship ship = new Ship(width / 2, height / 2);
         pane.getChildren().add(ship.getCharacter());
         Scene scene = new Scene(pane, width, height);
-        Map<KeyCode, Boolean> Keys = new HashMap<>();
+
+        Map<KeyCode, Boolean> keys = new HashMap<>();
+        List<Asteroid> asteroids = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Random random = new Random();
+            asteroids.add(new Asteroid(random.nextInt(width / 3), random.nextInt(height)));
+        }
+        asteroids.forEach(asteroid -> pane.getChildren().add(asteroid.getCharacter()));
+        asteroids.forEach(asteroid -> asteroid.accelerate());
 
         scene.setOnKeyPressed(event -> {
-            Keys.put(event.getCode(), Boolean.TRUE);
+            keys.put(event.getCode(), Boolean.TRUE);
         });
         scene.setOnKeyReleased(event -> {
-            Keys.put(event.getCode(), Boolean.FALSE);
+            keys.put(event.getCode(), Boolean.FALSE);
         });
 
         new AnimationTimer() {
             @Override
             public void handle(long now) {
 
-                if (Keys.getOrDefault(KeyCode.LEFT, false)) {
+                if (keys.getOrDefault(KeyCode.LEFT, false)) {
                     ship.turnLeft();
                 }
-                if (Keys.getOrDefault(KeyCode.RIGHT, false)) {
+                if (keys.getOrDefault(KeyCode.RIGHT, false)) {
                     ship.turnRight();
                 }
-                if (Keys.getOrDefault(KeyCode.UP, false)) {
+                if (keys.getOrDefault(KeyCode.UP, false)) {
                     ship.accelerate();
                 }
                 ship.move();
+
+                asteroids.forEach(asteroid -> {
+                    asteroid.move();
+                });
+
+                asteroids.forEach(asteroid -> {
+                   if (ship.collide(asteroid)) {
+                       stop();
+                   }
+                });
+
+
             }
+
         }.start();
 
         stage.setTitle("Asteroids!");
