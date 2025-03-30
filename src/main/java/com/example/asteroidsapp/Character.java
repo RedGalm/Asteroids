@@ -48,8 +48,28 @@ public abstract class Character {
 
     }
 
+    public void setMovement(Point2D movement) {
+        this.movement = movement;
+    }
+
     public void move() {
         this.character.setTranslateX(this.character.getTranslateX() + this.movement.getX());
         this.character.setTranslateY(this.character.getTranslateY() + this.movement.getY());
+
+        if (this.character.getTranslateX() > AsteroidsApp.width) {
+            this.character.setTranslateX(0);
+        }
+
+        if (this.character.getTranslateX() < 0) {
+            this.character.setTranslateX(AsteroidsApp.width);
+        }
+
+        if (this.character.getTranslateY() > AsteroidsApp.height) {
+            this.character.setTranslateY(0);
+        }
+
+        if (this.character.getTranslateY() < 0) {
+            this.character.setTranslateY(AsteroidsApp.height);
+        }
     }
 }
