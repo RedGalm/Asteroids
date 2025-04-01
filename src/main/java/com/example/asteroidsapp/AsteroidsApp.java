@@ -25,16 +25,16 @@ public class AsteroidsApp extends Application {
         pane.getChildren().add(text);
         pane.getChildren().add(ship.getCharacter());
         Scene scene = new Scene(pane, width, height);
+        Random random = new Random();
 
         Map<KeyCode, Boolean> keys = new HashMap<>();
         List<Asteroid> asteroids = new ArrayList<>();
         List<Projectile> projectiles = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Random random = new Random();
+        List<Asteroid> disappearedAsteroids = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
             asteroids.add(new Asteroid(random.nextInt(width / 3), random.nextInt(height)));
         }
         asteroids.forEach(asteroid -> pane.getChildren().add(asteroid.getCharacter()));
-        asteroids.forEach(asteroid -> asteroid.accelerate());
 
         scene.setOnKeyPressed(event -> {
             keys.put(event.getCode(), Boolean.TRUE);
@@ -86,6 +86,7 @@ public class AsteroidsApp extends Application {
                             .toList();
 
                     collisions.forEach(collided -> {
+                        disappearedAsteroids.add(collided);
                         pane.getChildren().remove(collided.getCharacter());
                         asteroids.remove(collided);
                         removableProjectiles.add(projectile);
@@ -100,7 +101,16 @@ public class AsteroidsApp extends Application {
                     projectiles.remove(projectile);
                 });
 
+                if (!(disappearedAsteroids.isEmpty())) {
+                    if (Math.random() < 0.010) {
+                        if (!(disappearedAsteroids.getFirst().collide(ship))) {
+                            asteroids.add(disappearedAsteroids.getFirst());
+                            pane.getChildren().add(disappearedAsteroids.getFirst().getCharacter());
+                            disappearedAsteroids.removeFirst();
+                        }
+                    }
 
+                }
 
             }
         }.start();
