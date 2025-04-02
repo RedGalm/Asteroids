@@ -1,1 +1,1 @@
-Program developed and runned in the IntelliJ IDE.
+Program developed and run in the IntelliJ IDE.
