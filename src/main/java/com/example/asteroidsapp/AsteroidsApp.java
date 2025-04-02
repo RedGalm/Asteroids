@@ -146,7 +146,6 @@ public class AsteroidsApp extends Application {
             }
         }.start();
 
-
         stage.setTitle("Asteroids!");
         stage.setScene(startScreen);
         startButton.setOnAction(event -> {
